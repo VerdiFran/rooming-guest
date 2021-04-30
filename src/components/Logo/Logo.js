@@ -11,7 +11,6 @@ const Logo = () => {
     return (
         <div className={styles.logoContainer}>
             <img alt="logo" src={logo} width="48px" height="48px"/>
-            <span>Rooming</span>
         </div>
     )
 }

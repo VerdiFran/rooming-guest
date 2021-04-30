@@ -1,4 +1,6 @@
 import React from 'react'
+import {NavLink} from 'react-router-dom'
+import {TO_REGISTRATION} from '../../routes'
 
 /**
  * Home component with information about our project
@@ -8,7 +10,9 @@ import React from 'react'
 const Home = () => {
     return (
         <div>
-            Home
+            <NavLink to={TO_REGISTRATION}>
+                регистрация
+            </NavLink>
         </div>
     )
 }
