@@ -1,7 +1,7 @@
 import * as axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'http://176.119.158.143/api'
+    baseURL: 'http://176.119.158.143:8080/api'
 })
 
 export const registrationAPI = {

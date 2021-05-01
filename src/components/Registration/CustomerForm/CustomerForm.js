@@ -12,7 +12,7 @@ import * as Yup from 'yup'
  * @returns {JSX.Element}
  * @constructor
  */
-const CustomerForm = () => {
+const CustomerForm = ({loading, registerCompany}) => {
     const {Title, Text} = Typography
 
     const SignupSchema = Yup.object().shape({
@@ -58,7 +58,7 @@ const CustomerForm = () => {
                 }]
             }}
             validationSchema={SignupSchema}
-            onSubmit={() => {}}
+            onSubmit={(values) => registerCompany(values)}
         >
             {({
                   values,
@@ -162,7 +162,7 @@ const CustomerForm = () => {
                         <div className={styles.registerButtonContainer}>
                             <Button
                                 type="primary"
-                                htmlType="submit"
+                                loading={loading}
                                 onClick={() => {
                                     validateForm().then(errors => {
                                         console.log(errors)
