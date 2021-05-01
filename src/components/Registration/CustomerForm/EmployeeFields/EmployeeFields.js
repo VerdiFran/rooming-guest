@@ -10,20 +10,22 @@ import {Form, Input} from 'formik-antd'
 const EmployeeFields = ({employeeIndex}) => {
     return (
         <div>
-            <Form.Item name={`employees.${employeeIndex}.firstName`} label="Имя">
+            <Form.Item name={`employees.${employeeIndex}.firstName`} label="Имя" required hasFeedback>
                 <Input name={`employees.${employeeIndex}.firstName`}/>
             </Form.Item>
-            <Form.Item name={`employees.${employeeIndex}.lastName`} label="Фамилия">
+            <Form.Item name={`employees.${employeeIndex}.lastName`} label="Фамилия" required hasFeedback>
                 <Input name={`employees.${employeeIndex}.lastName`}/>
             </Form.Item>
             <Form.Item
                 name={`employees.${employeeIndex}.email`}
                 label="Email"
                 tooltip="На этот адрес придет письмо с данными для входа в систему."
+                required
+                hasFeedback
             >
                 <Input name={`employees.${employeeIndex}.email`}/>
             </Form.Item>
-            <Form.Item name={`employees.${employeeIndex}.phoneNumber`} label="Номер телефона">
+            <Form.Item name={`employees.${employeeIndex}.phoneNumber`} label="Номер телефона" hasFeedback>
                 <Input name={`employees.${employeeIndex}.phoneNumber`}/>
             </Form.Item>
         </div>
