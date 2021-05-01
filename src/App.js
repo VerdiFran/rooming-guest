@@ -6,14 +6,16 @@ import {BrowserRouter, Switch, Route, Redirect, withRouter} from 'react-router-d
 import {TO_HOME, TO_REGISTRATION} from './routes'
 import Home from './components/Home/Home'
 import Registration from './components/Registration/Registration'
+import {Provider} from 'react-redux'
+import store from './redux/store'
 
 const App = () => {
     const {Header, Content, Footer} = Layout
 
     return (
         <div className="App">
-            <Layout className="layout">
-                <Header>
+            <Layout className="layout" style={{backgroundColor: 'transparent'}}>
+                <Header style={{backgroundColor: 'transparent'}}>
                     <Logo/>
                 </Header>
                 <Content>
@@ -23,7 +25,7 @@ const App = () => {
                         <Redirect to={TO_HOME}/>
                     </Switch>
                 </Content>
-                <Footer>Rooming ©2021</Footer>
+                <Footer style={{backgroundColor: 'transparent'}}>Rooming ©2021</Footer>
             </Layout>
         </div>
     )
@@ -39,7 +41,9 @@ const AppContainer = withRouter(App)
 const MainApp = () => {
     return (
         <BrowserRouter>
-            <AppContainer/>
+            <Provider store={store}>
+                <AppContainer/>
+            </Provider>
         </BrowserRouter>
     )
 }
