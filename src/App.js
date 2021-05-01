@@ -12,8 +12,8 @@ const App = () => {
 
     return (
         <div className="App">
-            <Layout className="layout">
-                <Header>
+            <Layout className="layout" style={{backgroundColor: 'transparent'}}>
+                <Header style={{backgroundColor: 'transparent'}}>
                     <Logo/>
                 </Header>
                 <Content>
@@ -23,7 +23,7 @@ const App = () => {
                         <Redirect to={TO_HOME}/>
                     </Switch>
                 </Content>
-                <Footer>Rooming ©2021</Footer>
+                <Footer style={{backgroundColor: 'transparent'}}>Rooming ©2021</Footer>
             </Layout>
         </div>
     )

@@ -1,0 +1,20 @@
+@import "./../../../common-scss/variables";
+
+.centred {
+    text-align: center;
+}
+
+.employeeList {
+    padding: 16px;
+}
+
+.registerButtonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.simpleText {
+    padding: 0 30px;
+    text-align: justify;
+}
