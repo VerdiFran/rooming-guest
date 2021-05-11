@@ -14,8 +14,8 @@ const UserForm = ({formik, cityOptions, setSearchTerm}) => {
         <FormikProvider value={formik}>
             <Form
                 layout="horizontal"
-                labelCol={{span: 6}}
-                wrapperCol={{span: 16}}
+                labelCol={{span: 7}}
+                wrapperCol={{span: 15}}
             >
                 <Form.Item
                     name="firstName"
@@ -42,7 +42,7 @@ const UserForm = ({formik, cityOptions, setSearchTerm}) => {
                 <Form.Item
                     name="email"
                     label="Email"
-                    tooltip="На этот адрес придет письмо с данными для входа в систему."
+                    tooltip="Этот адрес будет использоваться для входа в систему."
                     required
                     hasFeedback
                 >
@@ -76,6 +76,29 @@ const UserForm = ({formik, cityOptions, setSearchTerm}) => {
                             setFieldValue('city', value)
                             setSearchTerm(value)
                         }}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="password"
+                    label="Пароль"
+                    required
+                    hasFeedback
+                >
+                    <Input
+                        name="password"
+                        onChange={handleChange}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="passwordConfirmation"
+                    label="Подтверждение пароля"
+                    tooltip="Введите пароль еще раз."
+                    required
+                    hasFeedback
+                >
+                    <Input
+                        name="passwordConfirmation"
+                        onChange={handleChange}
                     />
                 </Form.Item>
             </Form>
