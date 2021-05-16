@@ -2,11 +2,11 @@ import React from 'react'
 import {Descriptions} from 'antd'
 
 /**
- * Descriptions of company
+ * Description of company
  * @returns {JSX.Element}
  * @constructor
  */
-const CompanyDescriptions = ({company}) => {
+const CompanyDescription = ({company}) => {
     return (
         <Descriptions size="small" column={2} bordered>
             <Descriptions.Item label="Город">{company.city}</Descriptions.Item>
@@ -17,4 +17,4 @@ const CompanyDescriptions = ({company}) => {
     )
 }
 
-export default CompanyDescriptions
+export default CompanyDescription

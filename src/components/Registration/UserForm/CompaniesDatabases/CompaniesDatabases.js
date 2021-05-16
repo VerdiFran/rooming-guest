@@ -1,7 +1,7 @@
 import React from 'react'
 import {List, Space, Typography} from 'antd'
 import CompanyHeader from './CompanyHeader/CompanyHeader'
-import CompanyDescriptions from './CompantDescriptions/CompanyDescriptions'
+import CompanyDescription from './CompanyDescription/CompanyDescription'
 import InfoText from '../../../common/InfoText/InfoText'
 
 /**
@@ -66,7 +66,7 @@ const CompaniesDatabases = ({formik}) => {
                     companies.map(company => <List.Item>
                         <Space direction="vertical" size="large" style={{width: '100%', padding: '20px'}}>
                             <CompanyHeader company={company} formik={formik}/>
-                            <CompanyDescriptions company={company}/>
+                            <CompanyDescription company={company}/>
                         </Space>
                     </List.Item>)
                 }
