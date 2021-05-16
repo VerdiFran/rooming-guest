@@ -1,7 +1,8 @@
 import React from 'react'
-import {List, Space} from 'antd'
+import {List, Space, Typography} from 'antd'
 import CompanyHeader from './CompanyHeader/CompanyHeader'
 import CompanyDescriptions from './CompantDescriptions/CompanyDescriptions'
+import InfoText from '../../../common/InfoText/InfoText'
 
 /**
  * List of companies that have layouts databases
@@ -48,8 +49,18 @@ const CompaniesDatabases = ({formik}) => {
         },
     ]
 
+    const {Paragraph} = Typography
+
     return (
-        <Space direction="vertical" size="small" style={{width: '100%'}}>
+        <Space direction="vertical" size="small" style={{width: '100%', marginTop: '30px'}}>
+            <InfoText>
+                <div>
+                    <Paragraph>Здесь вы можете выбрать и добавить компании, которым вы бы хотели послать
+                               запрос на получение их баз планировок.</Paragraph>
+                    <Paragraph>Этот шаг можно пропустить и позже выполнить его в Административной
+                               панели.</Paragraph>
+                </div>
+            </InfoText>
             <List>
                 {
                     companies.map(company => <List.Item>
