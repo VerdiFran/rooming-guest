@@ -1,5 +1,5 @@
 import React from 'react'
-import {List, Space, Typography} from 'antd'
+import {Input, List, Space, Typography} from 'antd'
 import CompanyHeader from './CompanyHeader/CompanyHeader'
 import CompanyDescription from './CompanyDescription/CompanyDescription'
 import InfoText from '../../../common/InfoText/InfoText'
@@ -49,10 +49,14 @@ const CompaniesDatabases = ({formik}) => {
         },
     ]
 
+    const handleSearch = (value) => {
+        console.log(value)
+    }
+
     const {Paragraph} = Typography
 
     return (
-        <Space direction="vertical" size="small" style={{width: '100%', marginTop: '30px'}}>
+        <Space direction="vertical" size="small" style={{width: '100%', marginTop: '20px'}}>
             <InfoText>
                 <div>
                     <Paragraph>Здесь вы можете выбрать и добавить компании, которым вы бы хотели послать
@@ -61,6 +65,12 @@ const CompaniesDatabases = ({formik}) => {
                                панели.</Paragraph>
                 </div>
             </InfoText>
+            <Input.Search
+                allowClear
+                enterButton
+                style={{marginTop: '20px'}}
+                onSearch={(value) => handleSearch(value)}
+            />
             <List>
                 {
                     companies.map(company => <List.Item>
