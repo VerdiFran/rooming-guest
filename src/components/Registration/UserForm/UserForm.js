@@ -1,108 +1,44 @@
 import React from 'react'
-import {Form, Input, AutoComplete} from 'formik-antd'
-import {FormikProvider} from 'formik'
+import {Button, Space, Steps} from 'antd'
 
 /**
- * Registration form for user
+ * User registration form
  * @returns {JSX.Element}
  * @constructor
  */
-const UserForm = ({formik, cityOptions, setSearchTerm}) => {
-    const {handleChange, setFieldValue} = formik
+const UserForm = ({steps, currentStep, formik, loading, setCurrentStep}) => {
+    const {Step} = Steps
 
     return (
-        <FormikProvider value={formik}>
-            <Form
-                layout="horizontal"
-                labelCol={{span: 7}}
-                wrapperCol={{span: 15}}
-            >
-                <Form.Item
-                    name="firstName"
-                    label="Имя"
-                    required
-                    hasFeedback
-                >
-                    <Input
-                        name="firstName"
-                        onChange={handleChange}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="lastName"
-                    label="Фамилия"
-                    required
-                    hasFeedback
-                >
-                    <Input
-                        name="lastName"
-                        onChange={handleChange}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="email"
-                    label="Email"
-                    tooltip="Этот адрес будет использоваться для входа в систему."
-                    required
-                    hasFeedback
-                >
-                    <Input
-                        name="email"
-                        onChange={handleChange}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="phoneNumber"
-                    label="Контактный номер"
-                    required
-                    hasFeedback
-                >
-                    <Input
-                        name="phoneNumber"
-                        onChange={handleChange}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="city"
-                    label="Город"
-                    tooltip="Мы будем предлагать вам планировки в вашем городе."
-                    required
-                    hasFeedback
-                >
-                    <AutoComplete
-                        name="city"
-                        options={cityOptions}
-                        onChange={(value) => {
-                            setFieldValue('city', value)
-                            setSearchTerm(value)
+        <Space direction="vertical" size="middle" style={{width: '100%'}}>
+            <Steps current={currentStep}>
+                {steps.map(step => <Step title={step.title}/>)}
+            </Steps>
+            {
+                steps[currentStep].content
+            }
+            <Space direction="horizontal" size="small">
+                {
+                    currentStep > 0
+                    && <Button onClick={() => setCurrentStep(currentStep - 1)}>Назад</Button>
+                }
+                {
+                    currentStep < steps.length - 1
+                    && <Button onClick={() => setCurrentStep(currentStep + 1)}>Далее</Button>
+                }
+                {
+                    currentStep === steps.length - 1
+                    && <Button
+                        type="primary"
+                        loading={loading}
+                        onClick={() => {
+                            formik.validateForm().then()
+                            formik.handleSubmit()
                         }}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    label="Пароль"
-                    required
-                    hasFeedback
-                >
-                    <Input
-                        name="password"
-                        onChange={handleChange}
-                    />
-                </Form.Item>
-                <Form.Item
-                    name="passwordConfirmation"
-                    label="Подтверждение пароля"
-                    tooltip="Введите пароль еще раз."
-                    required
-                    hasFeedback
-                >
-                    <Input
-                        name="passwordConfirmation"
-                        onChange={handleChange}
-                    />
-                </Form.Item>
-            </Form>
-        </FormikProvider>
+                    >Зарегестрироваться</Button>
+                }
+            </Space>
+        </Space>
     )
 }
 

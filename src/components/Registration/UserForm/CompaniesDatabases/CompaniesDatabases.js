@@ -8,7 +8,7 @@ import CompanyDescriptions from './CompantDescriptions/CompanyDescriptions'
  * @returns {JSX.Element}
  * @constructor
  */
-const CompaniesDatabases = () => {
+const CompaniesDatabases = ({formik}) => {
     const companies = [
         {
             id: 0,
@@ -54,7 +54,7 @@ const CompaniesDatabases = () => {
                 {
                     companies.map(company => <List.Item>
                         <Space direction="vertical" size="large" style={{width: '100%', padding: '20px'}}>
-                            <CompanyHeader company={company}/>
+                            <CompanyHeader company={company} formik={formik}/>
                             <CompanyDescriptions company={company}/>
                         </Space>
                     </List.Item>)
