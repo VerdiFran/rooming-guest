@@ -40,9 +40,10 @@ const UserFormContainer = () => {
         }
     }, [debouncedSearchTerm])
 
-    const fakeAddUser = async () => {
+    const fakeAddUser = async (data) => {
         return await new Promise(resolve => {
             setTimeout(() => {
+                alert(JSON.stringify(data, null, 2))
                 resolve('done')
             }, 1500)
         })
