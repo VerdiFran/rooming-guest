@@ -5,6 +5,7 @@ import {citiesDbAPI} from '../../../api/citiesDbAPI'
 import {Button, Space, Steps} from 'antd'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
+import CompaniesDatabases from './CompaniesDatabases/CompaniesDatabases'
 
 /**
  * Container component for user registration form
@@ -117,39 +118,41 @@ const UserFormContainer = () => {
         },
         {
             title: 'Базы компаний',
-            content: <div>Выбор компаний</div>
+            content: <div><CompaniesDatabases/></div>
         }
     ]
 
-    return <Space direction="vertical" size="middle" style={{width: '100%'}}>
-        <Steps current={currentStep}>
-            {steps.map(step => <Step title={step.title}/>)}
-        </Steps>
-        {
-            steps[currentStep].content
-        }
-        <Space direction="horizontal" size="small">
+    return (
+        <Space direction="vertical" size="middle" style={{width: '100%'}}>
+            <Steps current={currentStep}>
+                {steps.map(step => <Step title={step.title}/>)}
+            </Steps>
             {
-                currentStep > 0
-                && <Button onClick={() => setCurrentStep(currentStep - 1)}>Назад</Button>
+                steps[currentStep].content
             }
-            {
-                currentStep < steps.length - 1
-                && <Button onClick={() => setCurrentStep(currentStep + 1)}>Далее</Button>
-            }
-            {
-                currentStep === steps.length - 1
-                && <Button
-                    type="primary"
-                    loading={loading}
-                    onClick={() => {
-                        formik.validateForm().then()
-                        formik.handleSubmit()
-                    }}
-                >Зарегестрироваться</Button>
-            }
+            <Space direction="horizontal" size="small">
+                {
+                    currentStep > 0
+                    && <Button onClick={() => setCurrentStep(currentStep - 1)}>Назад</Button>
+                }
+                {
+                    currentStep < steps.length - 1
+                    && <Button onClick={() => setCurrentStep(currentStep + 1)}>Далее</Button>
+                }
+                {
+                    currentStep === steps.length - 1
+                    && <Button
+                        type="primary"
+                        loading={loading}
+                        onClick={() => {
+                            formik.validateForm().then()
+                            formik.handleSubmit()
+                        }}
+                    >Зарегестрироваться</Button>
+                }
+            </Space>
         </Space>
-    </Space>
+    )
 }
 
 export default UserFormContainer
