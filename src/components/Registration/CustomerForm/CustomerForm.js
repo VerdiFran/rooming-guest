@@ -6,6 +6,7 @@ import {CloseOutlined, PlusSquareOutlined} from '@ant-design/icons'
 import EmployeeFields from './EmployeeFields/EmployeeFields'
 import styles from './CustomerForm.module.scss'
 import * as Yup from 'yup'
+import InfoText from '../../common/InfoText/InfoText'
 
 /**
  * Registration form for some customer
@@ -55,6 +56,11 @@ const CustomerForm = ({loading, registerCompany}) => {
                     lastName: '',
                     email: '',
                     phoneNumber: ''
+                }],
+                offices: [{
+                    city: '',
+                    street: '',
+                    house: ''
                 }]
             }}
             validationSchema={SignupSchema}
@@ -104,14 +110,70 @@ const CustomerForm = ({loading, registerCompany}) => {
                             onChange={handleChange}
                         />
                     </Form.Item>
+                    <FieldArray name="offices">
+
+                        {
+                            ({push, remove}) => <div>
+                                <List
+                                    className={styles.employeeList}
+                                    grid={{gutter: 16, column: 4}}
+                                    footer={<Button
+                                        type="dashed"
+                                        icon={<PlusSquareOutlined/>}
+                                        onClick={() => push({
+                                            city: '',
+                                            street: '',
+                                            house: ''
+                                        })}
+                                    >Добавить офис</Button>}>
+                                    {
+                                        values.offices.length > 0 && values.offices.map((office, index) => (
+                                            <List.Item>
+                                                <Card
+                                                    hoverable
+                                                    size="small"
+                                                    title={`Офис ${index + 1}`}
+                                                    extra={<Button
+                                                        type="text"
+                                                        icon={<CloseOutlined/>}
+                                                        onClick={() => {
+                                                            if (values.offices.length > 1) {
+                                                                remove(index)
+                                                            } else {
+                                                                message
+                                                                    .error('Чтобы зарегистрироваться в нашей системе, вашей компании необходимо иметь хотя бы один офис.')
+                                                                    .then()
+                                                            }
+                                                        }}
+                                                    />}
+                                                >
+                                                    <Space direction="horizontal" size="small">
+                                                        <Form.Item name={`offices.${index}.city`} label="Город">
+                                                            <Input name={`offices.${index}.city`}/>
+                                                        </Form.Item>
+                                                        <Form.Item name={`offices.${index}.street`} label="Улица">
+                                                            <Input name={`offices.${index}.street`}/>
+                                                        </Form.Item>
+                                                        <Form.Item name={`offices.${index}.house`} label="Дом">
+                                                            <Input name={`offices.${index}.house`}/>
+                                                        </Form.Item>
+                                                    </Space>
+                                                </Card>
+                                            </List.Item>
+                                        ))
+                                    }
+                                </List>
+                            </div>
+                        }
+                    </FieldArray>
                     <Space size="middle" direction="vertical">
                         <Title level={5} className={styles.centred}>Информация о сотрудниках</Title>
-                        <div className={styles.simpleText}>
+                        <InfoText>
                             <Text>
                                 Укажите информацию о сотрудниках, которые будут
                                 иметь доступ к системе. Вы должны указать хотя бы одного.
                             </Text>
-                        </div>
+                        </InfoText>
                         <FieldArray name="employees">
                             {({push, remove}) => (
                                 <div>
@@ -130,7 +192,7 @@ const CustomerForm = ({loading, registerCompany}) => {
                                         >Добавить сотрудника</Button>}
                                     >
                                         {
-                                            values.employees.length && values.employees.map((employee, index) =>
+                                            values.employees.length > 0 && values.employees.map((employee, index) =>
                                                 <List.Item>
                                                     <Card
                                                         hoverable
@@ -169,7 +231,7 @@ const CustomerForm = ({loading, registerCompany}) => {
                                     })
                                     handleSubmit()
                                 }}
-                            >Зарегестрировать компанию</Button>
+                            >Зарегистрировать компанию</Button>
                         </div>
                     </Space>
                 </Form>
