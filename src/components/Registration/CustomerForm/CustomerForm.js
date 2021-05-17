@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, Input} from 'formik-antd'
+import {Form, Input, AutoComplete} from 'formik-antd'
 import {FieldArray, Formik} from 'formik'
 import {Button, Card, List, message, Space, Typography} from 'antd'
 import {CloseOutlined, PlusSquareOutlined} from '@ant-design/icons'
@@ -13,7 +13,7 @@ import InfoText from '../../common/InfoText/InfoText'
  * @returns {JSX.Element}
  * @constructor
  */
-const CustomerForm = ({loading, registerCompany}) => {
+const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) => {
     const {Title, Text} = Typography
 
     const SignupSchema = Yup.object().shape({
@@ -42,6 +42,18 @@ const CustomerForm = ({loading, registerCompany}) => {
                     .min(3, 'Контактный номер не может иметь менее 3-х цифр.')
                     .max(12, 'Контактный номер не может иметь более 12-ти цифр.')
                     .matches(/\+?\d{3,12}/, 'Контактный номер может содержать только цифра и знак "+".')
+            })),
+        offices: Yup.array()
+            .of(Yup.object().shape({
+                city: Yup.string()
+                    .min(2, 'Слишком короткое название города.')
+                    .required('Это поле обязательно для заполнения.'),
+                street: Yup.string()
+                    .min(2, 'Слишком короткое название улицы.')
+                    .required('Это поле обязательно для заполнения.'),
+                house: Yup.string()
+                    .min(1, 'Слишком короткий номер дома.')
+                    .required('Это поле обязательно для заполнения.')
             }))
     })
 
@@ -70,6 +82,7 @@ const CustomerForm = ({loading, registerCompany}) => {
                   values,
                   handleSubmit,
                   handleChange,
+                  setFieldValue,
                   validateForm
               }) => (
                 <Form
@@ -148,13 +161,36 @@ const CustomerForm = ({loading, registerCompany}) => {
                                                     />}
                                                 >
                                                     <Space direction="horizontal" size="small">
-                                                        <Form.Item name={`offices.${index}.city`} label="Город">
-                                                            <Input name={`offices.${index}.city`}/>
+                                                        <Form.Item
+                                                            name={`offices.${index}.city`}
+                                                            label="Город"
+                                                            style={{width: '210px'}}
+                                                            required
+                                                            hasFeedback
+                                                        >
+                                                            <AutoComplete
+                                                                name={`offices.${index}.city`}
+                                                                options={cityOptions}
+                                                                onChange={(value) => {
+                                                                    setFieldValue(`offices.${index}.city`, value)
+                                                                    setSearchTerm(value)
+                                                                }}
+                                                            />
                                                         </Form.Item>
-                                                        <Form.Item name={`offices.${index}.street`} label="Улица">
+                                                        <Form.Item
+                                                            name={`offices.${index}.street`}
+                                                            label="Улица"
+                                                            required
+                                                            hasFeedback
+                                                        >
                                                             <Input name={`offices.${index}.street`}/>
                                                         </Form.Item>
-                                                        <Form.Item name={`offices.${index}.house`} label="Дом">
+                                                        <Form.Item
+                                                            name={`offices.${index}.house`}
+                                                            label="Дом"
+                                                            required
+                                                            hasFeedback
+                                                        >
                                                             <Input name={`offices.${index}.house`}/>
                                                         </Form.Item>
                                                     </Space>
