@@ -4,8 +4,8 @@ import useDebounce from '../../../hooks/useDebounce'
 import {citiesDbAPI} from '../../../api/citiesDbAPI'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
-import CompaniesDatabases from './CompaniesDatabases/CompaniesDatabases'
 import UserForm from './UserForm'
+import CompaniesDatabasesContainer from './CompaniesDatabases/CompaniesDatabasesContainer'
 
 /**
  * Container component for user registration form
@@ -22,41 +22,6 @@ const UserFormContainer = () => {
     const [currentStep, setCurrentStep] = useState(0)
 
     const debouncedSearchTerm = useDebounce(searchTerm, 1000)
-
-    const getCities = (searchTerm) => {
-        return citiesDbAPI.getCitiesByNamePrefix(searchTerm)
-    }
-
-    useEffect(() => {
-        if (debouncedSearchTerm) {
-            setIsSearching(true)
-            getCities(debouncedSearchTerm).then(response => {
-                setCityOptions(response.data.data.map(city => ({
-                    value: city.city,
-                    label: city.city
-                })))
-                setIsSearching(false)
-            })
-        }
-    }, [debouncedSearchTerm])
-
-    const fakeAddUser = async (data) => {
-        return await new Promise(resolve => {
-            setTimeout(() => {
-                alert(JSON.stringify(data, null, 2))
-                resolve('done')
-            }, 1500)
-        })
-    }
-
-    const handleSubmit = async (values) => {
-        setLoading(true)
-        // await registrationAPI.addUser(values)
-        await fakeAddUser(values)
-
-        setLoading(false)
-        setCurrentStep(currentStep + 1)
-    }
 
     const SignupSchema = Yup.object().shape({
         firstName: Yup.string()
@@ -93,17 +58,53 @@ const UserFormContainer = () => {
 
     const formik = useFormik({
         initialValues: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            phoneNumber: '',
-            city: '',
-            password: '',
+            firstName: 'ee',
+            lastName: 'ee',
+            email: 'e@2.ru',
+            phoneNumber: '89563323236',
+            city: 'Казань',
+            password: '123mmTTT',
+            passwordConfirmation: '123mmTTT',
             companyIds: []
         },
         validationSchema: SignupSchema,
         onSubmit: values => handleSubmit(values)
     })
+
+    const getCities = (searchTerm) => {
+        return citiesDbAPI.getCitiesByNamePrefix(searchTerm)
+    }
+
+    useEffect(() => {
+        if (debouncedSearchTerm) {
+            setIsSearching(true)
+            getCities(debouncedSearchTerm).then(response => {
+                setCityOptions(response.data.data.map(city => ({
+                    value: city.city,
+                    label: city.city
+                })))
+                setIsSearching(false)
+            })
+        }
+    }, [debouncedSearchTerm])
+
+    const fakeAddUser = async (data) => {
+        return await new Promise(resolve => {
+            setTimeout(() => {
+                alert(JSON.stringify(data, null, 2))
+                resolve('done')
+            }, 1500)
+        })
+    }
+
+    const handleSubmit = async (values) => {
+        setLoading(true)
+        // await registrationAPI.addUser(values)
+        await fakeAddUser(values)
+
+        setLoading(false)
+        setCurrentStep(currentStep + 1)
+    }
 
     const steps = [
         {
@@ -118,7 +119,7 @@ const UserFormContainer = () => {
         },
         {
             title: 'Базы компаний',
-            content: <CompaniesDatabases
+            content: <CompaniesDatabasesContainer
                 formik={formik}
             />
         }

@@ -9,50 +9,7 @@ import InfoText from '../../../common/InfoText/InfoText'
  * @returns {JSX.Element}
  * @constructor
  */
-const CompaniesDatabases = ({formik}) => {
-    const companies = [
-        {
-            id: 0,
-            name: 'ДомСтрой',
-            email: 'domstroy@ya.ru',
-            contactPhone: '+7 (391) 577-57-59',
-            city: 'Красноярск',
-            layoutsCount: 10,
-            createdAt: new Date()
-        },
-        {
-            id: 1,
-            name: 'Красноярская Строительная Компания',
-            email: 'petrova_anna@ksk.ru',
-            contactPhone: '+7 (391) 803-63-21',
-            city: 'Красноярск',
-            layoutsCount: 59,
-            createdAt: new Date()
-        },
-        {
-            id: 2,
-            name: 'ДомСтрой',
-            email: 'domstroy@ya.ru',
-            contactPhone: '+7 (391) 577-57-59',
-            city: 'Красноярск',
-            layoutsCount: 10,
-            createdAt: new Date()
-        },
-        {
-            id: 3,
-            name: 'Красноярская Строительная Компания',
-            email: 'petrova_anna@ksk.ru',
-            contactPhone: '+7 (391) 803-63-21',
-            city: 'Красноярск',
-            layoutsCount: 59,
-            createdAt: new Date()
-        },
-    ]
-
-    const handleSearch = (value) => {
-        console.log(value)
-    }
-
+const CompaniesDatabases = ({formik, companies, loading, handleSearch}) => {
     const {Paragraph} = Typography
 
     return (
@@ -68,6 +25,7 @@ const CompaniesDatabases = ({formik}) => {
             <Input.Search
                 allowClear
                 enterButton
+                loading={loading}
                 style={{marginTop: '20px'}}
                 onSearch={(value) => handleSearch(value)}
             />

@@ -15,8 +15,6 @@ const CompanyHeader = ({company, formik}) => {
 
     const {values, setFieldValue} = formik
 
-    console.log(values)
-
     return (
         <FormikProvider value={formik}>
             <div className={styles.header}>
