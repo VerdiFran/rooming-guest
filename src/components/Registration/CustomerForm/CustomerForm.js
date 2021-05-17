@@ -67,13 +67,22 @@ const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) =>
                     firstName: '',
                     lastName: '',
                     email: '',
-                    phoneNumber: ''
+                    phoneNumber: '',
+                    officeId: null,
+                    office: {
+                        id: null,
+                        city: '',
+                        street: '',
+                        house: ''
+                    }
                 }],
                 offices: [{
+                    id: 0,
                     city: '',
                     street: '',
                     house: ''
-                }]
+                }],
+                currOfficeId: 1
             }}
             validationSchema={SignupSchema}
             onSubmit={(values) => registerCompany(values)}
@@ -124,7 +133,6 @@ const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) =>
                         />
                     </Form.Item>
                     <FieldArray name="offices">
-
                         {
                             ({push, remove}) => <div>
                                 <List
@@ -133,11 +141,10 @@ const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) =>
                                     footer={<Button
                                         type="dashed"
                                         icon={<PlusSquareOutlined/>}
-                                        onClick={() => push({
-                                            city: '',
-                                            street: '',
-                                            house: ''
-                                        })}
+                                        onClick={() => {
+                                            setFieldValue('currOfficeId', values.currOfficeId + 1)
+                                            push({id: values.currOfficeId, city: '', street: '', house: ''})
+                                        }}
                                     >Добавить офис</Button>}>
                                     {
                                         values.offices.length > 0 && values.offices.map((office, index) => (
@@ -160,40 +167,37 @@ const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) =>
                                                         }}
                                                     />}
                                                 >
-                                                    <Space direction="horizontal" size="small">
-                                                        <Form.Item
+                                                    <Form.Item
+                                                        name={`offices.${index}.city`}
+                                                        label="Город"
+                                                        required
+                                                        hasFeedback
+                                                    >
+                                                        <AutoComplete
                                                             name={`offices.${index}.city`}
-                                                            label="Город"
-                                                            style={{width: '210px'}}
-                                                            required
-                                                            hasFeedback
-                                                        >
-                                                            <AutoComplete
-                                                                name={`offices.${index}.city`}
-                                                                options={cityOptions}
-                                                                onChange={(value) => {
-                                                                    setFieldValue(`offices.${index}.city`, value)
-                                                                    setSearchTerm(value)
-                                                                }}
-                                                            />
-                                                        </Form.Item>
-                                                        <Form.Item
-                                                            name={`offices.${index}.street`}
-                                                            label="Улица"
-                                                            required
-                                                            hasFeedback
-                                                        >
-                                                            <Input name={`offices.${index}.street`}/>
-                                                        </Form.Item>
-                                                        <Form.Item
-                                                            name={`offices.${index}.house`}
-                                                            label="Дом"
-                                                            required
-                                                            hasFeedback
-                                                        >
-                                                            <Input name={`offices.${index}.house`}/>
-                                                        </Form.Item>
-                                                    </Space>
+                                                            options={cityOptions}
+                                                            onChange={(value) => {
+                                                                setFieldValue(`offices.${index}.city`, value)
+                                                                setSearchTerm(value)
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        name={`offices.${index}.street`}
+                                                        label="Улица"
+                                                        required
+                                                        hasFeedback
+                                                    >
+                                                        <Input name={`offices.${index}.street`}/>
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        name={`offices.${index}.house`}
+                                                        label="Дом"
+                                                        required
+                                                        hasFeedback
+                                                    >
+                                                        <Input name={`offices.${index}.house`}/>
+                                                    </Form.Item>
                                                 </Card>
                                             </List.Item>
                                         ))
@@ -248,7 +252,13 @@ const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) =>
                                                             }}
                                                         />}
                                                     >
-                                                        <EmployeeFields employeeIndex={index}/>
+                                                        <EmployeeFields
+                                                            employeeIndex={index}
+                                                            officeOptions={values.offices.map(office => ({
+                                                                value: office.id,
+                                                                label: `г. ${office.city}, ул. ${office.street}, д. ${office.house}`
+                                                            }))}
+                                                        />
                                                     </Card>
                                                 </List.Item>
                                             )
