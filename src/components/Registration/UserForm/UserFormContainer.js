@@ -6,6 +6,7 @@ import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import UserForm from './UserForm'
 import CompaniesDatabasesContainer from './CompaniesDatabases/CompaniesDatabasesContainer'
+import {registrationAPI} from '../../../api/registrationAPI'
 
 /**
  * Container component for user registration form
@@ -88,19 +89,12 @@ const UserFormContainer = () => {
         }
     }, [debouncedSearchTerm])
 
-    const fakeAddUser = async (data) => {
-        return await new Promise(resolve => {
-            setTimeout(() => {
-                alert(JSON.stringify(data, null, 2))
-                resolve('done')
-            }, 1500)
-        })
-    }
-
     const handleSubmit = async (values) => {
         setLoading(true)
-        // await registrationAPI.addUser(values)
-        await fakeAddUser(values)
+
+        await registrationAPI.addUser(Object.fromEntries(
+            Object.entries(values).filter(entry => entry[0] !== 'passwordConfirmation')
+        ))
 
         setLoading(false)
         setCurrentStep(currentStep + 1)
