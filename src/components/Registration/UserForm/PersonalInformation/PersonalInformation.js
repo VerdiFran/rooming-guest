@@ -82,7 +82,7 @@ const PersonalInformation = ({formik, cityOptions, setSearchTerm}) => {
                 required
                 hasFeedback
             >
-                <Input
+                <Input.Password
                     name="password"
                     onChange={handleChange}
                 />
@@ -94,7 +94,7 @@ const PersonalInformation = ({formik, cityOptions, setSearchTerm}) => {
                 required
                 hasFeedback
             >
-                <Input
+                <Input.Password
                     name="passwordConfirmation"
                     onChange={handleChange}
                 />

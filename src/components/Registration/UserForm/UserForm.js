@@ -1,6 +1,8 @@
 import React from 'react'
 import {Button, message, Space, Steps} from 'antd'
 import {FormikProvider} from 'formik'
+import {Redirect} from 'react-router-dom'
+import {TO_HOME} from '../../../routes'
 
 /**
  * User registration form
@@ -11,6 +13,10 @@ const UserForm = ({steps, currentStep, formik, loading, setCurrentStep}) => {
     const {Step} = Steps
 
     const {validateForm, handleSubmit} = formik
+
+    if (!steps[currentStep]) {
+        return <Redirect to={TO_HOME}/>
+    }
 
     return (
         <FormikProvider value={formik}>
