@@ -27,7 +27,7 @@ const CompaniesDatabases = ({formik, companies, loading, handleSearch}) => {
                 enterButton
                 loading={loading}
                 style={{marginTop: '20px'}}
-                onSearch={(value) => handleSearch(value)}
+                onChange={(e) => handleSearch(e.target.value)}
             />
             <List>
                 {
