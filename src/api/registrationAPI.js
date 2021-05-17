@@ -12,5 +12,16 @@ export const registrationAPI = {
      */
     addCompany(company) {
         return instance.post('add-requests/companies', company)
+    },
+    /**
+     * POST request for adding new user
+     * @param {{firstName: string, lastName: string, email: string, phoneNumber: string, city: string}} user Information about user
+     * @returns {*}
+     */
+    addUser(user) {
+        return instance.post('users', user)
+    },
+    getCompanies(city, name = '', pageSize = 5, pageNumber = 1) {
+        return instance.get(`companies?name=${name}&city=${city}&pageNumber=${pageNumber}&pageSize=${pageSize}&withLayoutsCount=true`)
     }
 }

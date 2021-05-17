@@ -2,6 +2,7 @@ import React from 'react'
 import {Tabs} from 'antd'
 import styles from './Registration.module.scss'
 import CustomerFormContainer from './CustomerForm/CustomerFormContainer'
+import UserFormContainer from './UserForm/UserFormContainer'
 
 /**
  * Registration component contains two forms for registration a new user or company
@@ -24,7 +25,7 @@ const Registration = () => {
                     <CustomerFormContainer/>
                 </TabPane>
                 <TabPane tab="Пользователь" key="2">
-
+                    <UserFormContainer/>
                 </TabPane>
             </Tabs>
         </div>
