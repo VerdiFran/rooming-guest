@@ -3,9 +3,8 @@ import {useEffect, useState} from 'react'
 import {citiesDbAPI} from '../../../api/citiesDbAPI'
 import useDebounce from '../../../hooks/useDebounce'
 import {registrationAPI} from '../../../api/registrationAPI'
-import {message} from 'antd'
 
-const CustomerFormContainer = () => {
+const CustomerFormContainer = ({completeRegistration}) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [isSearching, setIsSearching] = useState(false)
     const [cityOptions, setCityOptions] = useState([])
@@ -39,7 +38,7 @@ const CustomerFormContainer = () => {
         setLoading(false)
 
         if (response.status === 200) {
-            message.success('Вы успешно зарегестрировали компанию.')
+            completeRegistration()
         }
     }
 

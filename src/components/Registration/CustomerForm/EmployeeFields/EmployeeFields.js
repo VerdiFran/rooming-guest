@@ -35,7 +35,7 @@ const EmployeeFields = ({employeeIndex, officeOptions}) => {
             >
                 <Input name={`employees.${employeeIndex}.email`}/>
             </Form.Item>
-            <Form.Item name={`employees.${employeeIndex}.phoneNumber`} label="Номер телефона" hasFeedback>
+            <Form.Item name={`employees.${employeeIndex}.phoneNumber`} label="Номер телефона" required hasFeedback>
                 <Input name={`employees.${employeeIndex}.phoneNumber`}/>
             </Form.Item>
         </div>

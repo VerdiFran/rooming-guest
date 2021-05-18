@@ -42,6 +42,7 @@ const CustomerForm = ({loading, cityOptions, setSearchTerm, handleSubmit}) => {
                     .min(3, 'Контактный номер не может иметь менее 3-х цифр.')
                     .max(12, 'Контактный номер не может иметь более 12-ти цифр.')
                     .matches(/\+?\d{3,12}/, 'Контактный номер может содержать только цифра и знак "+".')
+                    .required('Это поле обязательно для заполнения.')
             })),
         offices: Yup.array()
             .of(Yup.object().shape({
