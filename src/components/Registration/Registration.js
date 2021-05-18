@@ -24,7 +24,7 @@ const Registration = () => {
                 <TabPane tab="Заказчик" key="1">
                     <CustomerFormContainer/>
                 </TabPane>
-                <TabPane tab="Пользователь" key="2">
+                <TabPane tab="Индивидуальный пользователь" key="2">
                     <UserFormContainer/>
                 </TabPane>
             </Tabs>

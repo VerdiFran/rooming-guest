@@ -59,13 +59,13 @@ const UserFormContainer = () => {
 
     const formik = useFormik({
         initialValues: {
-            firstName: 'ee',
-            lastName: 'ee',
-            email: 'e@2.ru',
-            phoneNumber: '89563323236',
-            city: 'Казань',
-            password: '123mmTTT',
-            passwordConfirmation: '123mmTTT',
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            city: '',
+            password: '',
+            passwordConfirmation: '',
             companyIds: []
         },
         validationSchema: SignupSchema,
