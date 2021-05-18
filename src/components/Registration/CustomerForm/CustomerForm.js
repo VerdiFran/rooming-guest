@@ -13,7 +13,7 @@ import InfoText from '../../common/InfoText/InfoText'
  * @returns {JSX.Element}
  * @constructor
  */
-const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) => {
+const CustomerForm = ({loading, cityOptions, setSearchTerm, handleSubmit}) => {
     const {Title, Text} = Typography
 
     const SignupSchema = Yup.object().shape({
@@ -85,7 +85,7 @@ const CustomerForm = ({loading, cityOptions, setSearchTerm, registerCompany}) =>
                 currOfficeId: 1
             }}
             validationSchema={SignupSchema}
-            onSubmit={(values) => registerCompany(values)}
+            onSubmit={(values) => handleSubmit(values)}
         >
             {({
                   values,

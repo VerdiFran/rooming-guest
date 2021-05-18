@@ -6,8 +6,6 @@ import {BrowserRouter, Switch, Route, Redirect, withRouter} from 'react-router-d
 import {TO_HOME, TO_REGISTRATION} from './routes'
 import Home from './components/Home/Home'
 import Registration from './components/Registration/Registration'
-import {Provider} from 'react-redux'
-import store from './redux/store'
 
 const App = () => {
     const {Header, Content, Footer} = Layout
@@ -41,9 +39,7 @@ const AppContainer = withRouter(App)
 const MainApp = () => {
     return (
         <BrowserRouter>
-            <Provider store={store}>
-                <AppContainer/>
-            </Provider>
+            <AppContainer/>
         </BrowserRouter>
     )
 }

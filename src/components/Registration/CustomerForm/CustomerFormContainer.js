@@ -1,16 +1,11 @@
-import {connect} from 'react-redux'
 import CustomerForm from './CustomerForm'
-import {registerCompany} from '../../../redux/reducers/registrationReducer'
-import {getLoading} from '../../../utils/selectors/registrationSelectors'
 import {useEffect, useState} from 'react'
 import {citiesDbAPI} from '../../../api/citiesDbAPI'
 import useDebounce from '../../../hooks/useDebounce'
+import {registrationAPI} from '../../../api/registrationAPI'
+import {message} from 'antd'
 
-const mapStateToProps = (state) => ({
-    loading: getLoading(state)
-})
-
-const CustomerFormContainer = ({loading, registerCompany}) => {
+const CustomerFormContainer = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [isSearching, setIsSearching] = useState(false)
     const [cityOptions, setCityOptions] = useState([])
@@ -19,6 +14,33 @@ const CustomerFormContainer = ({loading, registerCompany}) => {
 
     const getCities = (searchTerm) => {
         return citiesDbAPI.getCitiesByNamePrefix(searchTerm)
+    }
+
+    const [loading, setLoading] = useState(false)
+
+    const handleSubmit = async (company) => {
+        setLoading(true)
+
+        const companyCopy = Object.fromEntries(Object.entries(company))
+
+        const offices = companyCopy.offices
+
+        delete companyCopy.offices
+        delete companyCopy.currOfficeId
+
+        companyCopy.employees.forEach(employee => {
+            employee.office = offices.find(ofc => ofc.id === employee.officeId)
+            delete employee.officeId
+            delete employee.office.id
+        })
+
+        const response = await registrationAPI.addCompany(companyCopy)
+
+        setLoading(false)
+
+        if (response.status === 200) {
+            message.success('Вы успешно зарегестрировали компанию.')
+        }
     }
 
     useEffect(() => {
@@ -38,8 +60,8 @@ const CustomerFormContainer = ({loading, registerCompany}) => {
         loading={loading}
         cityOptions={cityOptions}
         setSearchTerm={setSearchTerm}
-        registerCompany={registerCompany}
+        handleSubmit={handleSubmit}
     />
 }
 
-export default connect(mapStateToProps, {registerCompany})(CustomerFormContainer)
+export default CustomerFormContainer
