@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Tabs} from 'antd'
 import styles from './Registration.module.scss'
 import CustomerFormContainer from './CustomerForm/CustomerFormContainer'
+import RegistrationSuccess from './RegistrationSuccess/RegistrationSuccess'
 import UserFormContainer from './UserForm/UserFormContainer'
 
 /**
@@ -11,6 +12,14 @@ import UserFormContainer from './UserForm/UserFormContainer'
  */
 const Registration = () => {
     const {TabPane} = Tabs
+
+    const [didRegistered, setDidRegistered] = useState(false)
+
+    if (didRegistered) {
+        return <RegistrationSuccess/>
+    }
+
+    const completeRegistration = () => setDidRegistered(true)
 
     return (
         <div className={styles.formsContainer}>
@@ -22,7 +31,7 @@ const Registration = () => {
                 centered
             >
                 <TabPane tab="Заказчик" key="1">
-                    <CustomerFormContainer/>
+                    <CustomerFormContainer completeRegistration={completeRegistration}/>
                 </TabPane>
                 <TabPane tab="Пользователь" key="2">
                     <UserFormContainer/>

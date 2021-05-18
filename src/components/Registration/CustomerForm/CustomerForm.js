@@ -1,18 +1,19 @@
 import React from 'react'
-import {Form, Input} from 'formik-antd'
+import {Form, Input, AutoComplete} from 'formik-antd'
 import {FieldArray, Formik} from 'formik'
 import {Button, Card, List, message, Space, Typography} from 'antd'
 import {CloseOutlined, PlusSquareOutlined} from '@ant-design/icons'
 import EmployeeFields from './EmployeeFields/EmployeeFields'
 import styles from './CustomerForm.module.scss'
 import * as Yup from 'yup'
+import InfoText from '../../common/InfoText/InfoText'
 
 /**
  * Registration form for some customer
  * @returns {JSX.Element}
  * @constructor
  */
-const CustomerForm = ({loading, registerCompany}) => {
+const CustomerForm = ({loading, cityOptions, setSearchTerm, handleSubmit}) => {
     const {Title, Text} = Typography
 
     const SignupSchema = Yup.object().shape({
@@ -41,6 +42,19 @@ const CustomerForm = ({loading, registerCompany}) => {
                     .min(3, 'Контактный номер не может иметь менее 3-х цифр.')
                     .max(12, 'Контактный номер не может иметь более 12-ти цифр.')
                     .matches(/\+?\d{3,12}/, 'Контактный номер может содержать только цифра и знак "+".')
+                    .required('Это поле обязательно для заполнения.')
+            })),
+        offices: Yup.array()
+            .of(Yup.object().shape({
+                city: Yup.string()
+                    .min(2, 'Слишком короткое название города.')
+                    .required('Это поле обязательно для заполнения.'),
+                street: Yup.string()
+                    .min(2, 'Слишком короткое название улицы.')
+                    .required('Это поле обязательно для заполнения.'),
+                house: Yup.string()
+                    .min(1, 'Слишком короткий номер дома.')
+                    .required('Это поле обязательно для заполнения.')
             }))
     })
 
@@ -54,16 +68,31 @@ const CustomerForm = ({loading, registerCompany}) => {
                     firstName: '',
                     lastName: '',
                     email: '',
-                    phoneNumber: ''
-                }]
+                    phoneNumber: '',
+                    officeId: null,
+                    office: {
+                        id: null,
+                        city: '',
+                        street: '',
+                        house: ''
+                    }
+                }],
+                offices: [{
+                    id: 0,
+                    city: '',
+                    street: '',
+                    house: ''
+                }],
+                currOfficeId: 1
             }}
             validationSchema={SignupSchema}
-            onSubmit={(values) => registerCompany(values)}
+            onSubmit={(values) => handleSubmit(values)}
         >
             {({
                   values,
                   handleSubmit,
                   handleChange,
+                  setFieldValue,
                   validateForm
               }) => (
                 <Form
@@ -104,14 +133,88 @@ const CustomerForm = ({loading, registerCompany}) => {
                             onChange={handleChange}
                         />
                     </Form.Item>
+                    <FieldArray name="offices">
+                        {
+                            ({push, remove}) => <div>
+                                <List
+                                    className={styles.employeeList}
+                                    grid={{gutter: 16, column: 4}}
+                                    footer={<Button
+                                        type="dashed"
+                                        icon={<PlusSquareOutlined/>}
+                                        onClick={() => {
+                                            setFieldValue('currOfficeId', values.currOfficeId + 1)
+                                            push({id: values.currOfficeId, city: '', street: '', house: ''})
+                                        }}
+                                    >Добавить офис</Button>}>
+                                    {
+                                        values.offices.length > 0 && values.offices.map((office, index) => (
+                                            <List.Item>
+                                                <Card
+                                                    hoverable
+                                                    size="small"
+                                                    title={`Офис ${index + 1}`}
+                                                    extra={<Button
+                                                        type="text"
+                                                        icon={<CloseOutlined/>}
+                                                        onClick={() => {
+                                                            if (values.offices.length > 1) {
+                                                                remove(index)
+                                                            } else {
+                                                                message
+                                                                    .error('Чтобы зарегистрироваться в нашей системе, вашей компании необходимо иметь хотя бы один офис.')
+                                                                    .then()
+                                                            }
+                                                        }}
+                                                    />}
+                                                >
+                                                    <Form.Item
+                                                        name={`offices.${index}.city`}
+                                                        label="Город"
+                                                        required
+                                                        hasFeedback
+                                                    >
+                                                        <AutoComplete
+                                                            name={`offices.${index}.city`}
+                                                            options={cityOptions}
+                                                            onChange={(value) => {
+                                                                setFieldValue(`offices.${index}.city`, value)
+                                                                setSearchTerm(value)
+                                                            }}
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        name={`offices.${index}.street`}
+                                                        label="Улица"
+                                                        required
+                                                        hasFeedback
+                                                    >
+                                                        <Input name={`offices.${index}.street`}/>
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        name={`offices.${index}.house`}
+                                                        label="Дом"
+                                                        required
+                                                        hasFeedback
+                                                    >
+                                                        <Input name={`offices.${index}.house`}/>
+                                                    </Form.Item>
+                                                </Card>
+                                            </List.Item>
+                                        ))
+                                    }
+                                </List>
+                            </div>
+                        }
+                    </FieldArray>
                     <Space size="middle" direction="vertical">
                         <Title level={5} className={styles.centred}>Информация о сотрудниках</Title>
-                        <div className={styles.simpleText}>
+                        <InfoText>
                             <Text>
                                 Укажите информацию о сотрудниках, которые будут
                                 иметь доступ к системе. Вы должны указать хотя бы одного.
                             </Text>
-                        </div>
+                        </InfoText>
                         <FieldArray name="employees">
                             {({push, remove}) => (
                                 <div>
@@ -130,7 +233,7 @@ const CustomerForm = ({loading, registerCompany}) => {
                                         >Добавить сотрудника</Button>}
                                     >
                                         {
-                                            values.employees.length && values.employees.map((employee, index) =>
+                                            values.employees.length > 0 && values.employees.map((employee, index) =>
                                                 <List.Item>
                                                     <Card
                                                         hoverable
@@ -150,7 +253,13 @@ const CustomerForm = ({loading, registerCompany}) => {
                                                             }}
                                                         />}
                                                     >
-                                                        <EmployeeFields employeeIndex={index}/>
+                                                        <EmployeeFields
+                                                            employeeIndex={index}
+                                                            officeOptions={values.offices.map(office => ({
+                                                                value: office.id,
+                                                                label: `г. ${office.city}, ул. ${office.street}, д. ${office.house}`
+                                                            }))}
+                                                        />
                                                     </Card>
                                                 </List.Item>
                                             )
@@ -169,7 +278,7 @@ const CustomerForm = ({loading, registerCompany}) => {
                                     })
                                     handleSubmit()
                                 }}
-                            >Зарегестрировать компанию</Button>
+                            >Зарегистрировать компанию</Button>
                         </div>
                     </Space>
                 </Form>
